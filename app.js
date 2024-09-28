@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const productsRoutes = require("./productsRoutes");
+const productsRoutes = require("./routes/productsRoutes");
+const usersRoutes = require("./routes/usersRoutes");
 const cors = require("cors");
 const PORT = +process.env.PORT || 3000;
 const mongoose = require('mongoose')
@@ -28,7 +29,8 @@ app.use((request, response, next) => {
     next();
   });
   app.use("/products", productsRoutes);
-  //  productsRoutes -> acts as a middleware to be done before handling the request
+  app.use("/users",usersRoutes)
+  //  productsRoutes / usersRoutes-> acts as a middleware to be done before handling the request
 // run server
 app.listen(PORT, () => {
   console.log("Server is running @ port", PORT);
