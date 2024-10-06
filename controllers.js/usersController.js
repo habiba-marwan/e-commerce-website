@@ -1,6 +1,8 @@
 const user = require('../models/usersModel')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const readUsers = async(req,res)=>{
     try{
@@ -68,30 +70,43 @@ const register = async(req,res)=>{
           })
          }
          catch(err){
-             res.status(500).json("user couldn't be added");
+             res.status(500).json({message:"user couldn't be added"});
          }
          
         })
      
 }
 }
-const login = async (req,res)=>{
-const {userName,password} = req.body
-const match = await findUser(userName)
-if(!match)
-    return res.status(400).json("invalid credentials")
-//check using same hash algo
-bcrypt.compare(password,match.password).then((result)=>{
-    if(!result)
-        return res.status(400).json("invalid credentials")
-else return res.status(200).json("successfully logged in")
-}
-)
+
+
+const login = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const match = await findUser(userName);
+    // Check if the user was found
+    if (!match) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+   
+    const result = await bcrypt.compare(password, match.password);
+    console.log(match.password)
+    if (!result) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+  const token = jwt.sign({userId:match._id},process.env.JWT_KEY,{ algorithm: 'HS256', expiresIn: '1d' })
+    return res.status(200).json({
+      message: "Successfully logged in",
+      user: match.userName,
+      token:token
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
 
 
-
-}
 module.exports = {
     addUser,
     findUser,

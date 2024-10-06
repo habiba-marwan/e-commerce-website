@@ -1,0 +1,23 @@
+[
+    {
+      "_id": "66e8972afcd9abdb38598d0f",
+      "title": "shirt",
+      "price": 2000,
+      "description": "black t-shirt",
+      "__v": 0
+    },
+    {
+      "_id": "66e8974cfcd9abdb38598d12",
+      "title": "t-shirt",
+      "price": 100,
+      "description": "true religion",
+      "__v": 0
+    },
+    {
+      "_id": "66e8c7a9f5305323454d1ebe",
+      "title": "blouse",
+      "price": 1000,
+      "description": "pink chiffon",
+      "__v": 0
+    }
+  ]
